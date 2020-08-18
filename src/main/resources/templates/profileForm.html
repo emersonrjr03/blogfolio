@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Herms - Blogfolio</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <!-- CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <!-- JS-->
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <!--    Summer Note-->
+    <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+
+</head>
+<body>
+    <header>
+        <th:block th:include="navBar"></th:block>
+    </header>
+    <section>
+        <div class="container pb-3" style="width: 60%">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" style="background-color: transparent;padding-left:0px">
+                    <li class="breadcrumb-item " aria-current="page"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create new post</li>
+                </ol>
+            </nav>
+
+            <div>
+                <th:block th:include="messageValidation"></th:block>
+                <form method="post">
+                    <input type="hidden" name="id" th:value="${profile.id}">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="givenName" placeholder="Given Name *" th:value="${profile.givenName}">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="familyName" placeholder="Family Name *" th:value="${profile.familyName}">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="birthDate" placeholder="01/01/1990" th:value="${profile.birthDate}">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="jobTitle" placeholder="Java Developer" th:value="${profile.jobTitle}">
+                    </div>
+                    <textarea type="text" class="form-control ck-editor" name="description" placeholder="Description *" ><span th:text="${profile.description}"></span></textarea>
+
+                    <small class="form-text text-muted">(*) Campos obrigatórios</small>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Save</button>
+                    <a href="/aboutme" class="btn btn-light" role="button" style="margin-top: 10px;">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const cloudName = 'dsonk49e9';
+		const unsignedUploadPreset = 'a4t9zbep';
+        for(var elem of document.getElementsByClassName('ck-editor')){
+            var editor = CKEDITOR.replace(elem.name, {
+                language: 'en',
+                filebrowserImageUploadUrl: '/uploader/upload.php' // this is only for the upload tab to appear on dialog
+            });
+
+            // Change request to upload to Cloudinary server
+			editor.on( 'fileUploadRequest', function(evt) {
+
+				// Prepare request to Cloudinary
+				var url = 'https://api.cloudinary.com/v1_1/'+cloudName+'/upload';
+				var xhr = evt.data.fileLoader.xhr;
+				xhr.open('POST', url, true);
+				xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+				// Fill all necessary fields for Cloudinary
+				var fd = new FormData();
+				fd.append('upload_preset', unsignedUploadPreset);
+				fd.append('folder', 'content/articles'); // Optional - place image at specific folder admin in Cloudinary
+				fd.append('tags', 'browser_upload'); // Optional - add tag for image admin in Cloudinary
+				fd.append('file', evt.data.fileLoader.file);
+
+				// Send the request to Cloudinary server
+				xhr.send(fd);
+
+				// Prevented the default behavior.
+				evt.stop();
+			});
+
+			// Change response to handle Cloudinary response
+			editor.on( 'fileUploadResponse', function(evt) {
+
+				// Prevent the default response handler.
+				evt.stop();
+
+				// Get XHR and response.
+				var data = evt.data,
+				xhr = data.fileLoader.xhr,
+				response = JSON.parse(xhr.responseText);
+
+				// Transfer the response to Ckeditor format
+				data.uploaded = 1;
+				data.fileName = response.public_id + '.' + response.format;
+				data.url = response.secure_url;
+			});
+        }
+
+    </script>
+</body>
+</html>

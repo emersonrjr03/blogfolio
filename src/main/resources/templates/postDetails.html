@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Herms - Blogfolio</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <!-- CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <!-- JS-->
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <th:block th:include="navBar"></th:block>
+    </header>
+    <main>
+        <div class="container pb-3" style="width: 60%">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" style="background-color: transparent;padding-left:0px">
+                    <li class="breadcrumb-item " aria-current="page"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item " aria-current="page"><a href="/posts">Posts</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"><span th:text="${post.title}"></span></li>
+                </ol>
+            </nav>
+
+            <article>
+                <h1 class="card-title" style="font-weight: bold; margin-bottom: 20px">
+                        <span th:text="${post.title}"></span>
+                        <div sec:authorize="isAuthenticated()">
+                            <a class="btn btn-info pb-0 pl-2" th:href="${(#mvc.url('PC#editPost').arg(0, post.id)).build()}">
+                                <i class="material-icons mr-1">edit</i>
+                                <span style="vertical-align: super;">Edit</span>
+                            </a>
+                        </div>
+                </h1>
+                <p class="card-subtitle mb-2 " style="font-size: 0.8rem;">
+                    <i class="material-icons">person_outline</i>
+                    <span th:text="${post.author}"></span>
+                    <br>
+                    <i class="material-icons">date_range</i>
+                    <span th:text="${post.date}"></span>
+                </p>
+
+                <section>
+                    <p class="card-text mt-2">
+                        <span th:utext="${post.text} "></span>
+                    </p>
+                </section>
+
+            </article>
+        </div>
+    </main>
+</body>
+</html>
