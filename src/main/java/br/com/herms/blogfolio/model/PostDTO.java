@@ -1,31 +1,43 @@
 package br.com.herms.blogfolio.model;
 
+import br.com.herms.blogfolio.utils.ConvertUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@Entity
-public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class PostDTO {
     private Long id;
 
     @NotBlank
     private String title;
-
     @NotBlank
     private String author;
-
-    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private LocalDate date;
-
+    private String date;
     @NotBlank
-    @Lob
     private String  text;
+
+    public PostDTO(){}
+
+    public PostDTO(Post post){
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.author = post.getAuthor();
+        this.date = ConvertUtils.localDateToString(post.getDate());
+        this.text = post.getText();
+    }
+
+    public Post toPost() {
+        Post post = new Post();
+        post.setId(this.id);
+        post.setTitle(this.title);
+        post.setAuthor(this.author);
+        post.setDate(ConvertUtils.stringToLocalDate(this.date));
+        post.setText(this.text);
+        return post;
+    }
 
     public Long getId() {
         return id;
@@ -51,11 +63,11 @@ public class Post {
         this.author = author;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

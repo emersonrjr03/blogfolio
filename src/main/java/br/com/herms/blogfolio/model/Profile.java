@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Profile {
@@ -26,6 +28,13 @@ public class Profile {
 
     @Lob
     private String description;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Experience> experiencesList;
+
+    public Profile() {
+        experiencesList = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
@@ -75,4 +84,11 @@ public class Profile {
         this.description = description;
     }
 
+    public List<Experience> getExperiencesList() {
+        return experiencesList;
+    }
+
+    public void setExperiencesList(List<Experience> experiencesList) {
+        this.experiencesList = experiencesList;
+    }
 }

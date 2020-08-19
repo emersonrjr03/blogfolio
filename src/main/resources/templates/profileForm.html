@@ -31,22 +31,41 @@
             <div>
                 <th:block th:include="messageValidation"></th:block>
                 <form method="post">
-                    <input type="hidden" name="id" th:value="${profile.id}">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="givenName" placeholder="Given Name *" th:value="${profile.givenName}">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="familyName" placeholder="Family Name *" th:value="${profile.familyName}">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="birthDate" placeholder="01/01/1990" th:value="${profile.birthDate}">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="jobTitle" placeholder="Java Developer" th:value="${profile.jobTitle}">
-                    </div>
-                    <textarea type="text" class="form-control ck-editor" name="description" placeholder="Description *" ><span th:text="${profile.description}"></span></textarea>
 
-                    <small class="form-text text-muted">(*) Campos obrigatórios</small>
+                    <h4>Personal Information</h4>
+                    <hr/>
+
+                    <input type="hidden" name="id" th:value="${profile.id}">
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label for="inputGivenName">Given Name</label>
+                            <input type="text" class="form-control" name="givenName" id="inputGivenName" placeholder="Given Name *" th:value="${profile.givenName}">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="inputFamilyName">Family Name</label>
+                            <input type="text" class="form-control" name="familyName"  id="inputFamilyName" placeholder="Family Name *" th:value="${profile.familyName}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputBirthDate">Birth Date</label>
+                        <input type="text" class="form-control" name="birthDate" id="inputBirthDate"  placeholder="01/01/1990" th:value="${profile.birthDate}">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputJobTitle">Job Title</label>
+                        <input type="text" class="form-control" name="jobTitle" id="inputJobTitle" placeholder="Java Developer" th:value="${profile.jobTitle}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtAreaDescription">Description</label>
+                        <textarea type="text" class="form-control ck-editor" name="description" id="txtAreaDescription" placeholder="Description *" ><span th:text="${profile.description}"></span></textarea>
+                    </div>
+                    <div class="form-group">
+                        <h4>Experience</h4>
+                        <hr/>
+                        <th:block th:include="experiencesList"></th:block>
+                    </div>
+                    <small class="form-text text-muted">(*) Mandatory fields</small>
 
                     <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Save</button>
                     <a href="/aboutme" class="btn btn-light" role="button" style="margin-top: 10px;">Cancel</a>
@@ -76,8 +95,7 @@
 				// Fill all necessary fields for Cloudinary
 				var fd = new FormData();
 				fd.append('upload_preset', unsignedUploadPreset);
-				fd.append('folder', 'content/articles'); // Optional - place image at specific folder admin in Cloudinary
-				fd.append('tags', 'browser_upload'); // Optional - add tag for image admin in Cloudinary
+				fd.append('tags', 'blogfolio'); // Optional - add tag for image admin in Cloudinary
 				fd.append('file', evt.data.fileLoader.file);
 
 				// Send the request to Cloudinary server
@@ -104,6 +122,8 @@
 				data.url = response.secure_url;
 			});
         }
+
+
 
     </script>
 </body>

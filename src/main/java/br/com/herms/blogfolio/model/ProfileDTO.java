@@ -3,12 +3,12 @@ package br.com.herms.blogfolio.model;
 import br.com.herms.blogfolio.utils.ConvertUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProfileDTO {
 
@@ -17,12 +17,16 @@ public class ProfileDTO {
     private String givenName;
     @NotBlank
     private String familyName;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private String birthDate;
     private String jobTitle;
     @Lob
     private String description;
 
+    private List<ExperienceDTO> experiencesList;
+
     public ProfileDTO(){
+        experiencesList = new ArrayList<>();
     }
 
     public ProfileDTO(Profile profile){
@@ -32,6 +36,7 @@ public class ProfileDTO {
         this.birthDate = ConvertUtils.localDateToString(profile.getBirthDate());
         this.jobTitle = profile.getJobTitle();
         this.description = profile.getDescription();
+        this.experiencesList = profile.getExperiencesList().stream().map(ex -> new ExperienceDTO(ex)).collect(Collectors.toList());
     }
 
     public Profile toProfile(){
@@ -40,8 +45,9 @@ public class ProfileDTO {
         profile.setGivenName(this.givenName);
         profile.setFamilyName(this.familyName);
         profile.setBirthDate(ConvertUtils.stringToLocalDate(this.birthDate));
-        profile.setDescription(this.description);
         profile.setJobTitle(this.jobTitle);
+        profile.setDescription(this.description);
+        profile.setExperiencesList(this.experiencesList.stream().map(ex -> ex.toExperience()).collect(Collectors.toList()));
         return profile;
     }
 
@@ -91,5 +97,13 @@ public class ProfileDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<ExperienceDTO> getExperiencesList() {
+        return experiencesList;
+    }
+
+    public void setExperiencesList(List<ExperienceDTO> experiencesList) {
+        this.experiencesList = experiencesList;
     }
 }

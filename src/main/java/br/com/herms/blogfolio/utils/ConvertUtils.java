@@ -6,12 +6,19 @@ import java.time.format.DateTimeFormatter;
 public class ConvertUtils {
 
     public static LocalDate stringToLocalDate(String dateStr) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return LocalDate.parse(dateStr, formatter);
+        if(dateStr != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return LocalDate.parse(dateStr, formatter);
+        }
+
+        return null;
     }
 
     public static String localDateToString(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return date.format(formatter);
+        if(date != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return date.format(formatter);
+        }
+        return null;
     }
 }

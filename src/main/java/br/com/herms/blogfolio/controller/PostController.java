@@ -1,6 +1,7 @@
 package br.com.herms.blogfolio.controller;
 
 import br.com.herms.blogfolio.model.Post;
+import br.com.herms.blogfolio.model.PostDTO;
 import br.com.herms.blogfolio.service.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
@@ -48,22 +49,26 @@ public class PostController {
     }
 
     @RequestMapping(value = "savepost", method = RequestMethod.POST)
-    public String savePost(@Valid Post post, BindingResult result, RedirectAttributes attributes){
+    public String savePost(@Valid PostDTO postDto, BindingResult result, RedirectAttributes attributes){
         //redirect to the same page
         if(result.hasErrors()){
             attributes.addFlashAttribute("message", "Check if the mandatory fields were filled");
-            if(post.getId() == null){
+            if(postDto.getId() == null){
                 return "redirect:/newpost";
             } else {
-                return "redirect:/editpost/" + post.getId();
+                return "redirect:/editpost/" + postDto.getId();
             }
 
         }
+        Post post = postDto.toPost();
 
         String redirectTo = ENDPOINT_POST;
         if(post.getId() == null){
             post.setDate(LocalDate.now());
         } else {
+            Post oldPost = postService.findById(post.getId());
+            post.setDate(oldPost.getDate());
+
             redirectTo = ENDPOINT_POST + "/" + post.getId();
         }
 
@@ -76,6 +81,7 @@ public class PostController {
         ModelAndView mv = new ModelAndView("postForm");
         Post post = postService.findById(id);
         mv.addObject("post", post);
+
         return mv;
     }
 }
