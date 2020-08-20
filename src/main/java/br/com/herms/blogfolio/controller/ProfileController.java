@@ -56,7 +56,10 @@ public class ProfileController {
 
     @RequestMapping(value = "/addExperience", method = RequestMethod.POST)
     public ModelAndView addOrder(ProfileDTO profile, HttpServletRequest request) {
-        profile.getExperiencesList().add(new ExperienceDTO());
+        ExperienceDTO e = new ExperienceDTO();
+        e.setCompanyName("");
+        e.setJobTitle(profile.getJobTitle());
+        profile.getExperiencesList().add(e);
 
         ModelAndView mv = new ModelAndView("experiencesList");
         mv.addObject("profile", profile);

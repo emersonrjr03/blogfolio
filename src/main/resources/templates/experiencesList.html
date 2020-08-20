@@ -54,32 +54,33 @@
         function replaceItems (html) {
             // Replace the <fieldset id="items"> with a new one returned by server.
             $('#experiencesList').replaceWith($(html));
+            initializeCkEditor();
         }
 
 
-            $('button[name="addExperience"]').click(function (event) {
-                event.preventDefault();
-                var data = $('form').serialize();
-                $.post('/addExperience', data, replaceItems);
-            });
+        $('button[name="addExperience"]').click(function (event) {
+            event.preventDefault();
+            var data = $('form').serialize();
+            $.post('/addExperience', data, replaceItems);
+        });
 
-            $('button[name="removeExperience"]').click(function (event) {
-                event.preventDefault();
-                var data = $('form').serialize();
-                $.post('/removeExperience/' + $(this).val(), data, replaceItems);
-            });
+        $('button[name="removeExperience"]').click(function (event) {
+            event.preventDefault();
+            var data = $('form').serialize();
+            $.post('/removeExperience/' + $(this).val(), data, replaceItems);
+        });
 
-            function updateExperienceTitle(elementId, index){
-                var jobTitle = $('input[name="experiencesList[' + index + '].jobTitle"]').val()
-                var companyName = $('input[name="experiencesList[' + index + '].companyName"]').val();
-                var titleElement = $('h4[id="' + elementId+index + '"]');
-                if(jobTitle || jobTitle.length != 0){
-                    titleElement.text(jobTitle + ' at ' + companyName)
-                } else {
-                    titleElement.text('');
-                }
-
+        function updateExperienceTitle(elementId, index){
+            var jobTitle = $('input[name="experiencesList[' + index + '].jobTitle"]').val()
+            var companyName = $('input[name="experiencesList[' + index + '].companyName"]').val();
+            var titleElement = $('h4[id="' + elementId+index + '"]');
+            if(jobTitle || jobTitle.length != 0){
+                titleElement.text(jobTitle + ' at ' + companyName)
+            } else {
+                titleElement.text('');
             }
+
+        }
 
     </script>
 </body>

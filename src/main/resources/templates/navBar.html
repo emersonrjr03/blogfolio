@@ -18,10 +18,10 @@
                 <span class="text-muted" style="font-size: 9px;">blogfolio</span>
             </a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item">
+                <li class="nav-item" th:classappend="${currentPage == 'posts'} ? 'active'" >
                     <a class="nav-link" href="/posts">Posts</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" th:classappend="${currentPage == 'aboutme'} ? 'active'">
                     <a class="nav-link" href="/aboutme">About Me</a>
                 </li>
             </ul>
