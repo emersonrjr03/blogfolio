@@ -28,12 +28,12 @@
             <form class="form-inline my-2 my-lg-0">
                 <!-- Authenticated Options-->
                 <div sec:authorize="not isAuthenticated()">
-                    <a class="btn btn-outline-light pb-0 pl-1 pr-1" href="/login"><span class="material-icons">lock</span></a>
+                    <a class="btn btn-outline-light pb-0 pl-1 pr-1" href="/login" data-toggle="tooltip" data-placement="top" title="Login"><span class="material-icons">lock</span></a>
                 </div>
                 <div sec:authorize="isAuthenticated()">
                     <a class="btn btn-primary mr-2" href="/newpost">New Post</a>
                     <a class="btn btn-primary mr-2" href="/editprofile">Edit Profile</a>
-                    <a class="btn btn-outline-light pb-0 pl-1 pr-1" href="/logout"><span class="material-icons">lock_open</span></a>
+                    <a class="btn btn-outline-light pb-0 pl-1 pr-1" href="/logout" data-toggle="tooltip" data-placement="top" title="Logout"><span class="material-icons">lock_open</span></a>
                 </div>
             </form>
         </div>

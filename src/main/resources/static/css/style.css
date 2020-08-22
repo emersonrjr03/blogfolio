@@ -1,5 +1,42 @@
+@font-face {
+    src: url('../fonts/Heebo-VariableFont_wght.ttf');
+    font-family: heebo;
+}
+html {
+  scroll-behavior: smooth;
+  font-family: heebo;
+}
+
 .post-preview {
     max-height: 170px;
     overflow: hidden;
     margin-bottom: 10px;
+}
+
+.job-title{
+    display: inline;
+}
+.job-period{
+    display: inline;
+}
+.job-local{
+
+}
+.job-description{
+
+}
+
+.experience-card {
+    #background-color: grey;
+    padding: 20px;
+}
+
+.time-line {
+    display: flex;
+    margin-top: -30px;
+}
+
+.time-line-point{
+    display: inline;
+    text-decoration: none;
 }

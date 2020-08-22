@@ -7,6 +7,7 @@
     <title>Herms - Blogfolio</title>
     <!-- CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css" type="text/css" media="screen">
     <!-- JS-->
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -26,9 +27,40 @@
         </div>
     </section>
     <section>
+        <!--Personal info-->
         <div class="container pb-3" style="width: 60%">
             <h1 th:text="${profile.givenName + ' ' + profile.familyName}"></h1>
             <h5 class="text-muted" th:text="${profile.jobTitle}"></h5>
+            <p th:utext="${profile.description}"></p>
+        </div>
+        <!--Time Line-->
+        <div class="container pb-3" style="width: 60%">
+            <hr/>
+            <div class="time-line">
+                <div th:class="${'col-sm-' + stat.index}" th:each="experience,stat : ${profile.experiencesList}">
+                    <a th:href="'#experience' + ${experience.id}" class="rounded-circle time-line-point"><span class="material-icons">arrow_drop_down_circle</span></a>
+                </div>
+            </div>
+
+        </div>
+        <!--Experience list-->
+        <div class="container pb-3" style="width: 60%">
+            <div class="row ">
+                <div th:id="'experience' + ${experience.id}" class="card shadow-sm mb-3 col-sm-12 experience-card" th:each="experience : ${profile.experiencesList}">
+                    <div class="job-title">
+                        <h4 th:text="${experience.jobTitle + ' at ' + experience.companyName}"></h4>
+                    </div>
+                    <div class="job-period">
+                        <label class="text-muted" th:text="${experience.startDate}"></label>
+                        <label class="text-muted">to</label>
+                        <label class="text-muted" th:text="${experience.endDate != null ? experience.endDate : 'current'}"></label>
+                    </div>
+
+                    <label class="job-local" th:text="${experience.local}"></label>
+
+                    <p class="card-text job-description"><span th:utext="${experience.description} "></span></p>
+                </div>
+            </div>
         </div>
     </section>
 </body>
